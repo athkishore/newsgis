@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='gis_input.js') }}"></script>
+{% endblock %}
+
+{%block content %}  
+    <div id="info">
+    	
+    	<h1>Experimental Point Input Page</h1>
+        <p>Enter Longitude and Latitude to see point on the map.</p>
+        
+        {{ wtf.quick_form(form) }}
+        
+        {% if lon and lat %}
+          <p>Last point entered was</p>
+          <p>Longitude : {{ lon }}</p>
+          <p>Latitude: {{ lat }}</p>
+        {% endif %}
+        
+        <p>Click on the +/- near the top left corner to zoom in and out.
+        </p>
+        <div id="responseText">
+        </div>
+    
+    </div>
+      <div id="map" class="smallmap"></div>
+
+    <div id="docs">
+    </div>
+    <script type="text/javascript">
+      {% if lon is none or lat is none %}
+        load();
+      {% else %}
+        load({{ lon }}, {{ lat }});
+      {% endif %}
+    </script>
+{% endblock %}

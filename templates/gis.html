@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='gis.js') }}"></script>
+{% endblock %}
+
+{%block content %}  
+    <div id="info">
+    	
+    	<h1>News Clippings from Mathrubhumi Thrissur edition 17/12/2015 to 31/12/2015</h1>
+        <p>Click on a red point to read the news.</p>
+        
+        <p>Click on the +/- near the top left corner to zoom in and out.
+        </p>
+        <div id="responseText">
+        </div>
+    
+    </div>
+      <div id="map" class="smallmap"></div>
+
+    <div id="docs">
+    </div>
+    <script type="text/javascript">
+      load()
+    </script>
+{% endblock %}

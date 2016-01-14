@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Kerala Environment News Web GIS</title>
+    <script src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style1.css') }}" type="text/css">
+    {% block script %}{% endblock %}
+  </head>
+
+  <body>
+    <h1 id="title">Kerala Environment News Web GIS (Experimental)</h1>
+
+    <div id="tags">
+      WMS, GetFeatureInfo
+    </div>
+
+    <p><a href="{{ url_for('index') }}"><strong>Home</strong></a>
+      |<a href="{{ url_for('add') }}"><strong>Add</strong></a>
+    </p>
+    
+    <p id="shortdesc">
+      People's Environment News Information System for the state of Kerala
+    </p>
+    
+    {% block content %}{% endblock %}
+    
+  </body>
+  
+</html>
