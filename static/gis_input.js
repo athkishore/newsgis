@@ -42,15 +42,23 @@ function load(lon, lat) {
 
         //map.addLayers([osm, districts, news]); 
         map.addLayers([osm, pointLayer]);
-        var point = new OpenLayers.Geometry.Point(lon, lat);
-        var proj = new OpenLayers.Projection("EPSG:4326");
-        point.transform(proj, map.getProjectionObject());
-        var pointFeature = new OpenLayers.Feature.Vector(point, null, null);
-        pointLayer.addFeatures([pointFeature]);
+        map.zoomToExtent(bounds);
+        if (lon != null && lat != null){
+          var point = new OpenLayers.Geometry.Point(lon, lat);
+          var proj = new OpenLayers.Projection("EPSG:4326");
+          point.transform(proj, map.getProjectionObject());
+          var pointFeature = new OpenLayers.Feature.Vector(point, null, null);
+          var lonlat = new OpenLayers.LonLat(lon, lat);
+          lonlat.transform(proj, map.getProjectionObject());
+          pointLayer.addFeatures([pointFeature]);
+          if (lon>77.1 || lon<75.8 || lat<10 || lat>11)
+            map.panTo(lonlat);
+        }
         //map.addControl(infoControls); 
         map.addControl(new OpenLayers.Control.LayerSwitcher());
         //infoControls.activate();
-        map.zoomToExtent(bounds);
+
+        
 }
 /*
 function showInfo(evt) {
