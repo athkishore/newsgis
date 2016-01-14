@@ -31,31 +31,9 @@ def proxy():
     print host
     return "Host not allowed"
 
-class LatLonForm(Form):
-  lon = FloatField('Longitude: ', validators=[Required(), NumberRange(min=-180, max=180)])
-  lat = FloatField('Latitude: ', validators=[Required(), NumberRange(min=-90, max=90)])
-  submit = SubmitField('Submit')
-
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-  lon = None
-  lat = None
-  if not session.has_key('lon'):
-    session['lon'] = None
-  if not session.has_key('lat'):
-    session['lat'] = None
-  form = LatLonForm()
-  print form.validate_on_submit()
-  if form.validate_on_submit():
-    session['lon'] = form.lon.data
-    session['lat'] = form.lat.data
-    return redirect(url_for('add'))
-  lon = session['lon']
-  session['lon']=None
-  lat = session['lat']
-  session['lat']=None
-  print lon, lat
-  return render_template('gis_input.html', form=form, lon=lon, lat=lat)
+  return render_template('gis_input.html')
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')

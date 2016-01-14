@@ -9,18 +9,7 @@
     <div id="info">
     	
     	<h1>Experimental Point Input Page</h1>
-        <p>Enter Longitude and Latitude to see point on the map.</p>
-        <p>Current map extents are approximately 75.8&lt;LON&lt;77.1,
-        10&lt;LAT&lt;11</p> 
-        <p>If you enter a point elsewhere the map will pan to the new point</p>
-        
-        {{ wtf.quick_form(form) }}
-        
-        {% if lon and lat %}
-          <p>Last point entered was</p>
-          <p>Longitude : {{ lon }}</p>
-          <p>Latitude: {{ lat }}</p>
-        {% endif %}
+        <p>Click on the map to add new point.</p>
         
         <p>Click on the +/- near the top left corner to zoom in and out.
         </p>
@@ -33,10 +22,6 @@
     <div id="docs">
     </div>
     <script type="text/javascript">
-      {% if lon is none or lat is none %}
         load();
-      {% else %}
-        load({{ lon }}, {{ lat }});
-      {% endif %}
     </script>
 {% endblock %}
