@@ -41,10 +41,25 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
             point, null, null
         );
         pointLayer.addFeatures([pointFeature]);
-        var text = '<p>New point added at '+lonlat.lon+
+        var text = '<p>You clicked on '+lonlat.lon+
             'E, '+lonlat.lat+'N</p>'
-        var response = document.getElementById('responseText').innerHTML;
-        document.getElementById('responseText').innerHTML = response+text;
+        document.getElementById('responseText').innerHTML = text;
+        var data = {
+            data: JSON.stringify({
+                "lon": lonlat.lon,
+                "lat": lonlat.lat
+            })
+        };
+        
+        document.getElementById('lon').value = lonlat.lon;
+        document.getElementById('lat').value = lonlat.lat;
+        
+        $.post("http://188.166.179.117/add?source=ajax",
+            data,
+            function(data, status) {
+              alert("Data: "+data+"\nStatus: "+status);
+            }
+        );
     }
 });
 

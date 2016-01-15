@@ -5,6 +5,7 @@ from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, FloatField
 from wtforms.validators import Required, NumberRange
 from flask.ext.bootstrap import Bootstrap
+from flask import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
@@ -31,9 +32,24 @@ def proxy():
     print host
     return "Host not allowed"
 
+class AddPointForm(Form):
+  lon = FloatField('Longitude: ', validators=[Required()])
+  lat = FloatField('Latitude: ', validators=[Required()])
+  date = StringField('Date: ', validators=[Required()])
+  details = StringField('Details', validators=[Required()])
+  submit = SubmitField('Submit')
+
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-  return render_template('gis_input.html')
+  source = request.args.get('source')
+  form = AddPointForm()
+  if source == 'ajax':
+    data = json.loads(request.form.get('data'))
+    lon = data['lon']
+    lat = data['lat']
+    ss = str(lon)+'E'+str(lat)+'N'
+    return ss
+  return render_template('gis_input.html', form=form)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
