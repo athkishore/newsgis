@@ -40,26 +40,12 @@ OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
         var pointFeature = new OpenLayers.Feature.Vector(
             point, null, null
         );
+        pointLayer.removeAllFeatures();
         pointLayer.addFeatures([pointFeature]);
-        var text = '<p>You clicked on '+lonlat.lon+
-            'E, '+lonlat.lat+'N</p>'
-        document.getElementById('responseText').innerHTML = text;
-        var data = {
-            data: JSON.stringify({
-                "lon": lonlat.lon,
-                "lat": lonlat.lat
-            })
-        };
-        
+
         document.getElementById('lon').value = lonlat.lon;
         document.getElementById('lat').value = lonlat.lat;
         
-        $.post("http://188.166.179.117/add?source=ajax",
-            data,
-            function(data, status) {
-              alert("Data: "+data+"\nStatus: "+status);
-            }
-        );
     }
 });
 

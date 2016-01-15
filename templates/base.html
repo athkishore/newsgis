@@ -12,6 +12,15 @@
     {% block script %}{% endblock %}
   </head>
 
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
   <body>
     <h1 id="title">Kerala Environment News Web GIS (Experimental)</h1>
 
