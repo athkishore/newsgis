@@ -1,5 +1,5 @@
 OpenLayers.ProxyHost = "http://188.166.179.117/proxy?url=";
-var map, infoControls, pointLayer;
+var map, infoControls, selectControl, pointLayer;
 var bounds = new OpenLayers.Bounds(
 		8434465,1214769,
 		8585072,1131719
@@ -32,6 +32,18 @@ function load(points) {
                 layers: [news],
                 queryVisible: true
             });
+            
+        selectControl = new OpenLayers.Control.SelectFeature(
+            pointLayer,
+            {
+              clickout: false, toggle: false,
+              multiple: false, hover: false,
+              toggleKey: "ctrlKey",
+              multipleKey: "shiftKey",
+              box: false
+            }
+        );
+        
 	infoControls.infoFormat = 'application/vnd.ogc.gml';
 	infoControls.events.register("getfeatureinfo", this, showInfo);
 
@@ -39,6 +51,8 @@ function load(points) {
         loadPointLayer(points);
         map.addControl(infoControls); 
         map.addControl(new OpenLayers.Control.LayerSwitcher());
+        map.addControl(selectControl);
+        selectControl.activate();
         infoControls.activate();
         map.zoomToExtent(bounds);
 }
