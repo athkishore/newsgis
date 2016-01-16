@@ -21,6 +21,18 @@
     <div id="docs">
     </div>
     <script type="text/javascript">
-      load()
+      {% if data %}
+        var points = [];
+        {% for point in data %}
+        points.push({
+          lon: parseFloat('{{ point[0] }}'),
+          lat: parseFloat('{{ point[1] }}'),
+          date: '{{ point[2] }}',
+          details: '{{ point[3][0:len(point[3])-1] }}'});
+        {% endfor %}
+      {% else %}
+        console.log("Data not received");
+      {% endif %}
+      load(points);
     </script>
 {% endblock %}

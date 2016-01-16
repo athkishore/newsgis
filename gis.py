@@ -20,7 +20,13 @@ if not app.debug:
 
 @app.route('/')
 def index():
-  return render_template('gis.html')
+  f = open('data.csv','r')
+  data = []
+  s = f.readline()
+  while s!='':
+    data.append(s.split('|'))
+    s = f.readline()
+  return render_template('gis.html', data=data, len=len)
 
 @app.route('/proxy')
 def proxy():  
@@ -38,6 +44,7 @@ def proxy():
   else:
     print host
     return "Host not allowed"
+
 
 class AddPointForm(Form):
   lon = FloatField('Longitude: ', validators=[Required()])

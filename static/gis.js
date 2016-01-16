@@ -1,10 +1,10 @@
 OpenLayers.ProxyHost = "http://188.166.179.117/proxy?url=";
-var map, infoControls, highlightLayer;
+var map, infoControls, pointLayer;
 var bounds = new OpenLayers.Bounds(
 		8434465,1214769,
 		8585072,1131719
 );
-function load() {
+function load(points) {
 	map = new OpenLayers.Map('map', {projection: new
 	OpenLayers.Projection("EPSG:900913")});
 
@@ -23,6 +23,7 @@ function load() {
             {isBaseLayer: false}
 	);
 
+        pointLayer = new OpenLayers.Layer.Vector("Point Layer");	
 	var osm = new OpenLayers.Layer.OSM("OpenStreetMap");
 
         infoControls = new OpenLayers.Control.WMSGetFeatureInfo({
@@ -34,7 +35,8 @@ function load() {
 	infoControls.infoFormat = 'application/vnd.ogc.gml';
 	infoControls.events.register("getfeatureinfo", this, showInfo);
 
-        map.addLayers([osm, districts, news]); 
+        map.addLayers([osm, districts, news, pointLayer]); 
+        loadPointLayer(points);
         map.addControl(infoControls); 
         map.addControl(new OpenLayers.Control.LayerSwitcher());
         infoControls.activate();
@@ -62,3 +64,31 @@ function showInfo(evt) {
           document.getElementById('responseText').innerHTML = text;
         } 
 }
+
+function loadPointLayer(points) {
+  var proj = new OpenLayers.Projection("EPSG:4326");
+  var lonlatPoints = [];
+  var pointFeatures = [];
+  for (var i=0; i<points.length; i++) {
+    var lonlat = new OpenLayers.LonLat(points[i].lon, points[i].lat);
+    lonlat.transform(proj, map.getProjectionObject());
+    lonlatPoints.push(lonlat);
+  }
+  for (var i=0; i<lonlatPoints.length; i++) {
+    var lonlatPoint = new OpenLayers.Geometry.Point(
+        lonlatPoints[i].lon, lonlatPoints[i].lat
+    );
+    var pointFeature = new OpenLayers.Feature.Vector(
+        lonlatPoint, null, null
+    );
+    pointFeatures.push(pointFeature);
+  }
+  for (var i=0; i<points.length; i++) {
+    console.log(points[i].lon+'|'+points[i].lat+
+            '|'+points[i].date+'|'+points[i].details);
+  }
+
+  pointLayer.addFeatures(pointFeatures);
+}
+    
+            
