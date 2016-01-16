@@ -24,6 +24,25 @@ function load(points) {
 	);
 
         pointLayer = new OpenLayers.Layer.Vector("Point Layer");	
+        
+        pointLayer.events.on({
+            'featureselected': function(evt) {
+                    document.getElementById('responseTextUser').innerHTML = 
+                        '<p>Layer: User-defined</p><table>\
+                        <tr>\
+                        <th><b>Date</b></th>\
+                        <th><b>Details</b></th>\
+                        </tr>\
+                        <tr>\
+                        <th>'+evt.feature.attributes.date+'</th>\
+                        <th>'+evt.feature.attributes.details+'</th>\
+                        </tr></table>';
+             },
+            'featureunselected': function(evt) {
+                  document.getElementById('responseTextUser').innerHTML = '';
+            }
+        });                          
+            
 	var osm = new OpenLayers.Layer.OSM("OpenStreetMap");
 
         infoControls = new OpenLayers.Control.WMSGetFeatureInfo({
@@ -36,7 +55,7 @@ function load(points) {
         selectControl = new OpenLayers.Control.SelectFeature(
             pointLayer,
             {
-              clickout: false, toggle: false,
+              clickout: true, toggle: false,
               multiple: false, hover: false,
               toggleKey: "ctrlKey",
               multipleKey: "shiftKey",
@@ -59,7 +78,7 @@ function load(points) {
 
 function showInfo(evt) {
         if (evt.features && evt.features.length) {
-          var text = '<table>\
+          var text = '<p>Layer: News</p><table>\
             <tr>\
             <th><b>Place</b></th>\
             <th><b>Date</b></th>\
@@ -74,8 +93,11 @@ function showInfo(evt) {
             <th>'+evt.features[i].attributes.Summary+'</th>\
             </tr>';
           }
-          text = text+'</table>';
+          text = text+'</table><p></p>';
           document.getElementById('responseText').innerHTML = text;
+        }
+        else {
+          document.getElementById('responseText').innerHTML = '';
         } 
 }
 
@@ -93,7 +115,12 @@ function loadPointLayer(points) {
         lonlatPoints[i].lon, lonlatPoints[i].lat
     );
     var pointFeature = new OpenLayers.Feature.Vector(
-        lonlatPoint, null, null
+        lonlatPoint, 
+        {
+          date: points[i].date,
+          details: points[i].details
+        },
+        null
     );
     pointFeatures.push(pointFeature);
   }
