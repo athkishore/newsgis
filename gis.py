@@ -68,6 +68,10 @@ def add():
     return redirect(url_for('add'))
   return render_template('gis_input.html', form=form)
 
+@app.route('/kannolichira')
+def kannolichira():
+  return render_template('kannolichira.html')  
+
 if __name__ == '__main__':
   app.run(host='0.0.0.0')
 
