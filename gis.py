@@ -70,7 +70,33 @@ def add():
 
 @app.route('/kannolichira')
 def kannolichira():
-  return render_template('kannolichira.html')  
+  f = open('plots.csv','r')
+  attr = []
+  s = f.readline()
+  for i in range(243):
+    s = f.readline()
+    t = s.replace(' ','').split(',')
+    d = {'Id':int(t[0]),\
+        'SurveyNo': t[1],
+        'SubDivNo': t[2],
+        'RentRoll': t[3],
+        'Owner': t[4],
+        'DBSvNo': t[5],
+        'DBRentRoll': t[6],
+        'DBOwner': t[7],
+        'DBStatus': t[8],
+        'Farming': t[9],
+        'Lease': t[10],
+        'Lessee': t[11],
+        'LastCult': t[12],
+        'NoConsent': t[13],
+        'Threat': t[14],
+        'Organic': t[15],
+        'Heirloom': t[16],
+        'FallowBlock': t[17][0:len(t[17])-1]}        
+    attr.append(json.dumps(t))
+    
+  return render_template('kannolichira.html', attr=attr)  
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0')

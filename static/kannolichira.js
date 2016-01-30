@@ -1,12 +1,18 @@
 OpenLayers.ProxyHost = "http://188.166.179.117/proxy?url=";
 var map, infoControls;
+var plots_gbl;
 var bounds = new OpenLayers.Bounds(
 		8483531,1154182,
 		8484780,1153347
 );
-function load(points) {
+var labels = ["Id", "Survey No.", "Subdivision No.", "Rent Roll No.", "Owner",
+    "Databank Survey No.", "Databank Rent Roll", "Databank Owner", "Databank Status",
+    "Farming", "Lease", "Lessee", "Last Cultivated", "No Consent", "Threat", "Organic",
+    "Heirloom seeds", "Fallow Block"];
+function load(plots) {
 	map = new OpenLayers.Map('map', {projection: new
 	OpenLayers.Projection("EPSG:900913"), numZoomLevels: 28});
+	plots_gbl=plots;
 
 	var districts = new OpenLayers.Layer.WMS("Districts",
             "http://188.166.179.117:8080/geoserver-2.5/vayal/wms", 
@@ -44,24 +50,13 @@ function load(points) {
 
 function showInfo(evt) {
         if (evt.features && evt.features.length) {
-          var text = '<table><tr>\
-            <th><b>Id</b></th>\
-            <th><b>Owner</b></th>\
-            <th><b>Lessee</b></th>\
-            <th><b>Farming</b></th>\
-            <th><b>Threat</b></th>\
-            <th><b>Remarks</b></th>\
-            <th><b>Thandaper</b></th>\
-            </tr>';
-          for (var i=0; i<evt.features.length; i+=1){
+          var id = evt.features[0].attributes.id;
+          var ind = id-1;
+          var text = '<table>';
+          for (var i=0; i<18; i++){
             text = text+'<tr>\
-            <th>'+evt.features[i].attributes.id+'</th>\
-            <th>'+evt.features[i].attributes.owner+'</th>\
-            <th>'+evt.features[i].attributes.lessee+'</th>\
-            <th>'+evt.features[i].attributes.Farming+'</th>\
-            <th>'+evt.features[i].attributes.Threat+'</th>\
-            <th>'+evt.features[i].attributes.Remarks+'</th>\
-            <th>'+evt.features[i].attributes.Thandaper+'</th>\
+            <th><b>'+labels[i]+'</b></th>\
+            <th>'+plots[ind][i]+'</th>\
             </tr>';
           }
           text = text+'</table><p></p>';
